@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://cs.nyu.edu/~joannakl/cs102_s21/projects/project5.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CS 102, Project 5</title>
+
+    <link href="./CS 102, Project 5_files/course_page.css" rel="stylesheet" type="text/css">
+    <link href="./CS 102, Project 5_files/image_slides.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./CS 102, Project 5_files/syntax.css">
+    <script src="./CS 102, Project 5_files/email.js"></script>
+
+</head>
+
+
+    <body>
+        
+<header>
+    <h1>CSCI-UA 102.05 (Data Structures), S21  </h1>
+</header>
+
+
+<nav>
+    <ul>
+        <li><a href="https://cs.nyu.edu/~joannakl/cs102_s21/index.html">Home</a></li>
+        <li><a href="https://cs.nyu.edu/~joannakl/cs102_s21/syllabus.html">Syllabus</a></li>
+        <li><a href="https://brightspace.nyu.edu/" target="_blank">NYU Brightspace</a></li>
+        <!--
+        <li><a href="/~joannakl/cs102_s21/daily.html">Daily</a></li>
+        <li><a href="https://gradescope.com/" target="_blank">GradeScope</a></li>
+        <li><a href="https://us.edstem.org/" target="_blank">Ed</a></li>
+        <li><a href="/~joannakl/cs102_s21/resources.html" target=_blank>Resources</a></li>
+        -->
+    </ul>
+</nav>
+
+
+
+        <div class="lab-right">
+  <p><strong>Project 5</strong> <br>
+<strong>due date:</strong> May 2</p>
+
+  <p><strong>submission mode:</strong> individual</p>
+
+</div>
+
+<main class="lab">
+
+  <h2 id="project-5-bst-mountain-adventure">Project 5: BST-Mountain Adventure</h2>
+
+  <hr>
+
+  <div class="emph">
+    <p>You may discuss any of the assignments with your classmates and tutors (or anyone else) but <span class="red"> all work for all assignments must be
+entirely your own</span>. Any sharing or copying of assignments will be considered cheating (this includes posting of partial or complete
+solutions on Ed, GitHub, Discord, Groupme, … or any other forum). If you get significant help from anyone, you should acknowledge it in
+your submission (and your grade will be proportional to the part that you completed on your own). You are responsible for
+every line in your program: you need to know what it does and why. You should not use any data structures and features of Java
+that have not been covered in class (or the prerequisite class). If you have doubts whether or not you are allowed to use certain
+structures, just ask your instructor.</p>
+  </div>
+
+  <hr>
+  <p><br><br></p>
+  <h3 id="introduction-and-objectives">Introduction and objectives</h3>
+
+  <p>The goal of this project is to implement a program that uses a binary search tree to model a mountain hiking expedition: A hiker starts at the top of the mountain.
+They need to find their way down the mountain with limited resources to survive and overcome obstacles. Your program will produce a list of all the possible paths that
+the hiker should take to survive.</p>
+
+  <p>The mountain is represented by a binary search tree. Nodes in this tree represent a rest-stops. The hiker restocks their supplies at those rest-stops. But they may also
+encounter obstacles at the rest-stops. Some of the supplies that they carry with them may help them pass through the obstacles. The paths from the root down represent possible trails.
+One the hiker starts a single path, they do not have an option of going back. Some of the paths lead to cliffs, others leads to the bottom of the mountain.
+See example below for more details.</p>
+
+  <p><strong>Start early!</strong> This project may not seem like much coding, but debugging and testing always takes time, especially for recursive algorithms.</p>
+
+  <hr>
+  <p><br></p>
+
+  <p>The credit for this project idea goes to Karl R. Rosenberg and Abhinav Gupta.
+<br></p>
+
+  <div class="wrap-collabsible">
+<input id="interface" class="toggle" type="checkbox" checked="true">
+<label for="interface" class="lbl-toggle"> User Interface </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <p>Your program has to be a console based program (no graphical interface).
+The user should not be prompted for any information (all required information for the program to run is provided in the input file given as a command line argument).
+The output of the program should be printed to standard output stream.
+Any error messages should be printed to the standard error stream.</p>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="usage" class="toggle" type="checkbox" checked="true">
+<label for="usage" class="lbl-toggle"> Program Usage </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <p>The program is started from the command line (or run within an IDE). It expects one command line argument: the name of the input file.
+<br></p>
+
+        <p>The input file will be a test file. Each line in the input describes a single point on the mountain (node in a BST). The format of each line is as follows:</p>
+
+        <p><code class="language-plaintext highlighter-rouge"> LABEL  SUPPLIES  OBSTACLES</code></p>
+
+        <p>In the above, <code class="language-plaintext highlighter-rouge">LABEL</code> is a string with the name of the rest stop. The alphanumeric comparison of the labels determines the shape of the tree.
+<code class="language-plaintext highlighter-rouge">SUPPLIES</code> is a (possibly empty) list of supplies that the hiker will get at this rest-stop. Valid supplies are <code class="language-plaintext highlighter-rouge">food</code>, <code class="language-plaintext highlighter-rouge">raft</code>, <code class="language-plaintext highlighter-rouge">axe</code>.
+<code class="language-plaintext highlighter-rouge">OBSTACLES</code> is a (possibly empty) list of obstacles that the hiker will encounter at this rest stop.  Valid obstacles are <code class="language-plaintext highlighter-rouge">fallen tree</code> and <code class="language-plaintext highlighter-rouge">river</code>.</p>
+
+        <p>See below for an example.</p>
+
+        <p>If the program is executed with non-existent or invalid command line argument, it should print an error message and terminate.</p>
+
+        <p>If the file contains any additional (and invalid) strings in the description of a rest-stop, they should be ignored.</p>
+
+        <p>The program \textbf{should not be interactive}. All input should be provided as the command line arguments. The user should not be prompted
+for any additional information.</p>
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="user" class="toggle" type="checkbox" checked="true">
+<label for="user" class="lbl-toggle"> Results/Output </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <p>The program has to calculate all possible paths down the mountain that lead all the way down that the hiker can take and survive.</p>
+
+        <p>The program output should consist of number of lines equal to the number of safe paths.
+Each safe path should consist of a space separated list of the rest-stop labels in order in which they are followed from top of the mountain to the bottom.
+The paths should be printed in order from <em>left</em> to <em>right</em> in the tree that represents the mountain.</p>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="classes" class="toggle" type="checkbox" checked="true">
+<label for="classes" class="lbl-toggle"> Example </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <center>
+<img width="800" alt="Way Finder Example" src="./CS 102, Project 5_files/BST-mountain.jpg">
+</center>
+
+        <p>The above figure depicts visually a tree that results from the following input file</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>J food raft food
+E fallen tree
+G food axe river
+I food fallen tree
+H
+F
+B food
+A
+D axe food
+C
+P
+L food food river
+R axe food raft
+Q
+K
+N axe
+M
+O
+</code></pre></div>        </div>
+
+        <p><code class="language-plaintext highlighter-rouge">food</code> is a single ration that lasts hiker the time needed to traverse a single segment of the trail (a single edge in the tree)</p>
+
+        <p><code class="language-plaintext highlighter-rouge">axe</code> is needed when the trail is obstructed by a <code class="language-plaintext highlighter-rouge">fallen tree</code>. The hiker cannot pass a <code class="language-plaintext highlighter-rouge">fallen tree</code> obstacle unless they have an <code class="language-plaintext highlighter-rouge">axe</code>.
+Once they use the <code class="language-plaintext highlighter-rouge">axe</code>, it becomes dull and cannot be used again.</p>
+
+        <p><code class="language-plaintext highlighter-rouge">raft</code> is needed when the train continues through a river. The hiker cannot pass a <code class="language-plaintext highlighter-rouge">river</code> obstacle unless they have a <code class="language-plaintext highlighter-rouge">raft</code>.
+Each <code class="language-plaintext highlighter-rouge">raft</code> is designed for single river crossing - once used, it cannot be used again.</p>
+
+        <p>There are many possible paths down the mountain depicted above, but only two lead to safety.</p>
+
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">J E B A</code>, <code class="language-plaintext highlighter-rouge">J E B D C</code>, <code class="language-plaintext highlighter-rouge">J E G F</code>, <code class="language-plaintext highlighter-rouge">J E G I H</code> - the hiker reaches rest-stop <code class="language-plaintext highlighter-rouge">E</code> and cannot continue without an <code class="language-plaintext highlighter-rouge">axe</code>.</li>
+          <li><code class="language-plaintext highlighter-rouge">J P L K</code> - the hiker reaches rest-stop K and falls off the cliff.</li>
+          <li><code class="language-plaintext highlighter-rouge">J P L N M</code>, <code class="language-plaintext highlighter-rouge">J P L N O</code> - the hiker uses the <code class="language-plaintext highlighter-rouge">raft</code> at rest-stop <code class="language-plaintext highlighter-rouge">L</code> and with new food supplies continues to the bottom of the mountain at either <code class="language-plaintext highlighter-rouge">M</code> or <code class="language-plaintext highlighter-rouge">O</code>.</li>
+          <li><code class="language-plaintext highlighter-rouge">J P R Q</code> - the hiker reaches rest-stop Q and falls off the cliff.</li>
+        </ul>
+
+        <p>In this case, the program should produce two lines of output:</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>J P L N M
+J P L N 0
+</code></pre></div>        </div>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="classes" class="toggle" type="checkbox" checked="true">
+<label for="classes" class="lbl-toggle"> Data Storage and Organization </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <p>The design of classes is up to you, but you do need to implement certain classes to represent certain entities in the program. You need to make decisions about how to design these classes to produce an efficient and well-put-together program. Make sure that all methods that you include in a particular class belong in that class.</p>
+
+        <h4 id="bstmountainadventure-class"><code class="code_title">BSTMountainAdventure</code> class</h4>
+
+        <p>This is the class that is the program. This means it has the 	<code class="language-plaintext highlighter-rouge">main</code> method. This class is responsible for parsing and validating
+the command line arguments, reading and parsing the input file, producing any error messages,
+handling any exceptions thrown by other classes, and producing output.</p>
+
+        <h4 id="bstmountain-class"><code class="code_title">BSTMountain</code> class</h4>
+
+        <p>This should be the class that reuses as much as you can of the <code class="language-plaintext highlighter-rouge">BST&lt;E&gt;</code> class that we have been using during lectures and recitations.
+Your class should represent the mountain itself (therefore, it should not generic and its nodes should store data items of type <code class="language-plaintext highlighter-rouge">RestStop</code>).
+It is up to you to decide how to implement this class, which methods to provide etc. The only restriction is that it must implement an actual binary search tree.
+You cannot just use one of the BST implementations that is in Java libraries.</p>
+
+        <h4 id="reststop-class"><code class="code_title">RestStop</code> class</h4>
+
+        <p>This class should represent a single rest stop. It should be capable of storing the label of the rest stop along with a list of the supplies that a hiker
+can collect at this rest-stop and a list of obstacles  that a hiker may encounter at this rest-stop. It may be useful to implement the <code class="language-plaintext highlighter-rouge">Comparable</code> interface.</p>
+
+        <h4 id="hiker-class"><code class="code_title">Hiker</code> class</h4>
+
+        <p>This class should represent a hiker traveling down the mountain. An object of this class should be capable of keeping track of all the supplies that the hiker
+has in their possession. This information should be updated as the hiker travels along a trail and consumes supplies (by either eating along the way, or using the tools
+to clear the path, or cross the river).</p>
+
+        <p>You may, but you are not required to, implement other classes.</p>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="rules" class="toggle" type="checkbox">
+<label for="rules" class="lbl-toggle"> Programming Rules </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <ul>
+          <li>
+            <p>You should follow the rules outlined in the document
+<a href="https://cs.nyu.edu/~joannakl/cs102_s21/notes/CodeConventions.pdf">Code conventions</a>
+posted on the course website.</p>
+          </li>
+          <li>
+            <p>You have to work with your own implementation of a BST class. It should be based on the one we have been using in class, but it cannot be based on one of the implementations in Java libraries.</p>
+          </li>
+          <li>
+            <p>You may use any exception-related classes.</p>
+          </li>
+        </ul>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="working" class="toggle" type="checkbox">
+<label for="working" class="lbl-toggle"> Working on This Assignment </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <ul>
+          <li><strong>You should start right away!</strong></li>
+          <li>You should modularize your design so that you can test it regularly: for example, implement the part of the code that reads and parses the input file, then implement and test individual classes, then implement the part that provides the interactive part of the program, … .</li>
+          <li>Make sure that at all times you <strong>have a working program!</strong>
+You should also implement stubs of methods that return <code class="language-plaintext highlighter-rouge">0</code> or <code class="language-plaintext highlighter-rouge">null</code>. This way your code compiles, even though it may
+not work completely.  You can implement methods that perform one task at a time.
+This way, if you run out of time, at least parts of your program will be functioning properly.</li>
+          <li>You should make sure that you are <strong>testing the program on much smaller data set</strong> for which you can determine the correct
+output manually. You can create  a test input file that contains only a few rows.</li>
+          <li>You should make sure that your program's results are consistent with what is described in this specification
+by running the program on carefully designed test inputs and examining
+the outputs produced to make sure they are correct.
+The goal in doing this is to try to find the mistakes you have most likely made in your code. <br>
+<strong>DO NOT</strong> test your program on the entire large input file. This may take a long time and you will never know
+if the results are correct or not.</li>
+          <li>Each class that you submit <strong>will be tested by itself without the context of other classes that you are implementing for this assignment</strong>. <br>
+This means that you need to make sure that your methods can perform their tasks correctly even if they are executed in situations that would not
+arise in the context of this specific program.</li>
+          <li>You should <strong>backup</strong> your code after each time you spend some time working on it.
+Save it to a flash drive, email it to yourself, upload it to your Google drive, push it to a private git repository,
+do anything that gives you a second (or maybe third copy). Computers tend to break just a few days or even
+a few hours before the due dates - make sure that you have working code if that happens.</li>
+        </ul>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="grading" class="toggle" type="checkbox">
+<label for="grading" class="lbl-toggle"> Grading </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <p>If your program does not compile or if it crashes (almost) every time it is run,
+you will get a zero on the assignment. Make sure that you are submitting
+functioning and documented code, even if it is not a complete implementation so that you can get partial credit.</p>
+
+        <p>If the program does not adhere to the specification, the grade will be low and
+will depend on how easy it is to figure out what the program is doing and how to work with it.</p>
+
+        <p>The grade will be determined by several factors:</p>
+        <ul>
+          <li>50 points: class correctness: correct behavior of the program in many different input files</li>
+          <li>20 points: design and the implementation of your code</li>
+          <li>10 points: efficient implementation
+ (this will be determined by a code review)</li>
+          <li>20 points: proper documentation, program style and format of submission
+ (this will be determined by a code review)</li>
+        </ul>
+
+      </div>
+    </div></div>
+
+  <div class="wrap-collabsible">
+<input id="submit" class="toggle" type="checkbox">
+<label for="submit" class="lbl-toggle"> How and What to Submit </label>
+<div class="collapsible-content">
+      <div class="content-inner">
+
+        <p><strong>For the purpose of grading, your project must be be in the package called <code class="language-plaintext highlighter-rouge">project5</code>.
+This means that each of your submitted source code files should start with a line:</strong></p>
+
+        <p><code class="language-plaintext highlighter-rouge">package project5;</code></p>
+
+        <p>Your should submit all your source code files (the ones with <code class="language-plaintext highlighter-rouge">.java</code> extensions only)
+either in a single <strong>zip</strong> file or as individual files to Gradescope. <strong>DO NOT</strong> submit <code class="language-plaintext highlighter-rouge">.class</code> files
+or any project files that your IDE might produce, or any other files created by your operating system and file system.
+You can see all the files on Gradescope.
+Verify that there is nothing there that you did not intend to put it.</p>
+
+        <p>You can produce a zip file directly from Eclipse (if this is what you are using):</p>
+        <ul>
+          <li>right click on the name of the package (inside the <code class="language-plaintext highlighter-rouge">src</code> folder) and select Export…</li>
+          <li>under General pick Archive File and click Next</li>
+          <li>in the window that opens select appropriate files and settings:
+            <ul>
+              <li>in the right pane pick ONLY the files that are actually part of the project,
+but make sure that you select all files that are needed</li>
+              <li>in the left pane, make sure that no other directories are selected</li>
+              <li>click Browse and navigate to a location that you can easily find on your system (Desktop or folder with the course materials or …)</li>
+              <li>in Options select "Save in zip format", "Compress the contents of the file" and "Create only selected directories"</li>
+            </ul>
+          </li>
+          <li>click Finish</li>
+        </ul>
+
+        <p>You may resubmit to Gradescope as many times as you wish before the submission link closes. But if you resubmit
+after the grace period ends, your assignment will be subject to the late point deductions.</p>
+
+        <p>Some of the autograder tests for this project will be hidden. This means that you need to make the effort
+to test your own implementation before you make the final submission.</p>
+
+      </div>
+    </div></div>
+
+</main>
+
+
+        
+<footer>
+    <div class="footerlinks">
+        <p>
+            <a href="http://www.nyu.edu/registrar/calendars/university-academic-calendar.html#1198%3EFall%202018%20Calendar%3C/a%3E%20%C2%B7%20%20%20%20%20%20%20%20%20%20%20%20%3Ca%20href=" http:="" cs.nyu.edu="" "="">Computer Science Department</a>  ·
+            <a href="http://www.nyu.edu/">New York University</a>
+
+        </p>
+    </div>
+    <div class="license">
+        <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+          <img alt="Creative Commons License" style="border-width:0" src="./CS 102, Project 5_files/80x15.png"></a><br>
+          This work is licensed under a Creative Commons Attribution 4.0 International License. </p>
+    </div>
+</footer>
+
+
+
+    
+
+
+</body></html>
